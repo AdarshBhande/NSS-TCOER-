@@ -434,6 +434,53 @@ html, body {
     }
 }
 
+/* 📱 Mobile-only tweaks (do NOT affect laptop/desktop) */
+@media (max-width: 600px) {
+    /* Keep header horizontal */
+    .header-container {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+    }
+
+    /* Logos scale down nicely */
+    .logo-container {
+        width: 48px;
+        height: 48px;
+    }
+
+    .logo-trinity {
+        width: 70px;   /* wider Trinity logo on mobile */
+        height: 48px;
+    }
+
+    .logo-nss {
+        width: 56px;
+        height: 56px;
+        padding: 4px;  /* thinner circle on mobile */
+        border-width: 2px;
+    }
+
+    /* Title text scales for mobile */
+    .header-text {
+        padding: 0 6px;
+    }
+
+    .college-name {
+        font-size: 0.9rem;   /* smaller title */
+        line-height: 1.1;
+    }
+
+    .college-id {
+        font-size: 0.65rem;  /* smaller subtitle */
+        line-height: 1.1;
+    }
+
+    .nss-title {
+        font-size: 0.8rem;   /* smaller NSS line */
+    }
+}
 
 
         

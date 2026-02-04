@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSS Scheme Information System - Trinity College</title>
+    <style>
+        :root {
+            /* Trinity & NSS Brand Colors */
+            --primary-blue: #002147; /* Academic Blue */
+            --nss-blue: #303f9f;
+            --accent-orange: #ff9933; /* Indian Saffron / Energy */
+            --bg-light: #f3f4f6;
+            --white: #ffffff;
+            --text-dark: #1f2937;
+            --text-gray: #4b5563;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Header Section --- */
+        header {
+            background-color: var(--white);
+            border-bottom: 5px solid var(--primary-blue);
+            box-shadow: var(--shadow);
+            padding: 1rem 5%;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo-placeholder {
+            width: 80px;
+            height: 80px;
+            background-color: #e5e7eb;
+            border: 2px dashed #9ca3af;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            text-align: center;
+            color: var(--text-gray);
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .header-text {
+            text-align: center;
+            flex-grow: 1;
+            padding: 0 1rem;
+        }
+
+        .college-name {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+
+        .nss-title {
+            font-size: 1.1rem;
+            color: var(--nss-blue);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .nss-badge {
+            background: var(--accent-orange);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        /* --- Main Content --- */
+        main {
+            flex: 1;
+            padding: 2rem 1rem;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Search Card */
+        .card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--nss-blue);
+            box-shadow: 0 0 0 3px rgba(48, 63, 159, 0.1);
+        }
+
+        .btn {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 0.9rem 2.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background-color: #1e3a8a;
+        }
+
+        .btn-back {
+            background-color: transparent;
+            color: var(--text-gray);
+            border: 1px solid #d1d5db;
+            padding: 0.5rem 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-back:hover {
+            background-color: #f3f4f6;
+            color: var(--text-dark);
+        }
+
+        /* Results List */
+        .scheme-item {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border-left: 6px solid var(--accent-orange);
+            text-align: left;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .scheme-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .scheme-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .scheme-tags {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            background: #e0f2fe;
+            color: #0369a1;
+            font-weight: 600;
+        }
+
+        .tag-age {
+            background: #ecfccb;
+            color: #3f6212;
+        }
+
+        .scheme-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .scheme-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .info-block h4 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: var(--text-gray);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 4px;
+        }
+
+        .info-block p, .info-block li {
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        .info-block ul {
+            list-style-type: none;
+        }
+
+        .info-block li::before {
+            content: "•";
+            color: var(--accent-orange);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+        
+        .info-block ul {
+            padding-left: 1rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--primary-blue);
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 640px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .logo-placeholder {
+                width: 60px;
+                height: 60px;
+            }
+            .college-name {
+                font-size: 1.1rem;
+            }
+            .scheme-header {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <!-- Left Logo: College -->
+            <div class="logo-placeholder">
+                College<br>Logo
+            </div>
+
+            <!-- Text Center -->
+            <div class="header-text">
+                <div class="college-name">Trinity College of Engineering & Research</div>
+                <div class="nss-title">
+                    <span class="nss-badge">NSS UNIT</span>
+                    National Service Scheme
+                </div>
+            </div>
+
+            <!-- Right Logo: NSS -->
+            <div class="logo-placeholder">
+                NSS<br>Logo
+            </div>
+        </div>
+    </header>
+
+    <main id="app">
+        <!-- View 1: Search Form -->
+        <div id="search-view" class="card">
+            <h2 style="margin-bottom: 0.5rem; color: var(--primary-blue);">Scheme Finder</h2>
+            <p style="margin-bottom: 2rem; color: var(--text-gray);">Enter beneficiary details to find relevant government schemes.</p>
+            
+            <form onsubmit="event.preventDefault(); findSchemes();">
+                <div class="form-group">
+                    <label for="age">Beneficiary Age (Years)</label>
+                    <input type="number" id="age" placeholder="e.g. 45" required min="0" max="110">
+                </div>
+
+                <div class="form-group">
+                    <label for="occupation">Occupation / Category</label>
+                    <select id="occupation">
+                        <option value="any">Any / General Citizen</option>
+                        <option value="farmer">Farmer (Kisan)</option>
+                        <option value="student">Student</option>
+                        <option value="labor">Daily Wage / Laborer</option>
+                        <option value="woman">Woman / Housewife</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn">
+                    Find Schemes <span style="font-size:1.2rem;">🔍</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- View 2: Results -->
+        <div id="results-view" class="hidden">
+            <button onclick="resetSearch()" class="btn btn-back">← Back to Search</button>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <h3 style="color: var(--primary-blue);">Recommended Schemes</h3>
+                <p id="result-summary" style="color: var(--text-gray); font-size: 0.9rem;"></p>
+            </div>
+
+            <div id="schemes-container">
+                <!-- Scheme Cards will be injected here via JS -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Created by NSS Volunteers of Trinity College of Engineering & Research.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem;">Note: This is an information portal. Please visit official government websites or Gram Panchayat for final verification.</p>
+    </footer>
+
+    <script>
+        // --- Database of Schemes ---
+        const schemesDB = [
+            // Children & Students
+            {
+                title: "Sukanya Samriddhi Yojana",
+                minAge: 0,
+                maxAge: 10,
+                categories: ["student", "woman", "any"],
+                genderLimit: "female",
+                description: "A small savings scheme for the girl child to secure her future education and marriage expenses.",
+                benefits: "High interest rate (approx 8%). Maturity at age 21. Tax benefits.",
+                docs: ["Birth Certificate of Girl", "Parent's Aadhaar/ID", "Address Proof"],
+                needs: "Account must be opened in Post Office or Authorized Bank."
+            },
+            {
+                title: "Poshan Abhiyaan (Mid-Day Meal)",
+                minAge: 5,
+                maxAge: 14,
+                categories: ["student", "any"],
+                description: "Provides free lunch to school children to improve nutritional status.",
+                benefits: "Free hot cooked meal every school day.",
+                docs: ["School Admission Proof", "Aadhaar Card"],
+                needs: "Must be enrolled in a Government or Aided School."
+            },
+            {
+                title: "Pre-Matric Scholarship",
+                minAge: 11,
+                maxAge: 16,
+                categories: ["student"],
+                description: "Financial aid for students belonging to Minority communities, SC/ST, and OBC.",
+                benefits: "Monetary support for tuition fees and maintenance allowance.",
+                docs: ["Caste Certificate", "Income Certificate", "Previous Year Marksheet", "Bank Passbook"],
+                needs: "Family income must be below specific limits (usually 1-2.5 Lakhs)."
+            },
+
+            // Adults (Farmers, Workers, Women)
+            {
+                title: "PM-KISAN Samman Nidhi",
+                minAge: 18,
+                maxAge: 100,
+                categories: ["farmer"],
+                description: "Direct income support for all landholding farmers' families.",
+                benefits: "₹6,000 per year paid in 3 equal installments directly to bank account.",
+                docs: ["Land Ownership Documents (7/12)", "Aadhaar Card", "Bank Passbook"],
+                needs: "Land must be in the farmer's name. e-KYC is mandatory."
+            },
+            {
+                title: "E-Shram Card",
+                minAge: 16,
+                maxAge: 59,
+                categories: ["labor", "farmer", "any", "woman"],
+                description: "National database of unorganized workers (construction, migrant, domestic workers).",
+                benefits: "Accident insurance of ₹2 Lakhs. Key to accessing future social security benefits.",
+                docs: ["Aadhaar Card", "Mobile Number linked to Aadhaar", "Bank Account Details"],
+                needs: "Registration can be done at CSC center or online."
+            },
+            {
+                title: "PM Ujjwala Yojana",
+                minAge: 18,
+                maxAge: 100,
+                categories: ["woman", "any"],
+                genderLimit: "female",
+                description: "Providing LPG gas connections to women from Below Poverty Line (BPL) households.",
+                benefits: "Free first refill and stove. Cash assistance for connection.",
+                docs: ["BPL Ration Card", "Aadhaar Card", "Bank Account"],
+                needs: "Applicant must be a woman above 18 years."
+            },
+            {
+                title: "Mudra Yojana (PMMY)",
+                minAge: 18,
+                maxAge: 65,
+                categories: ["any", "farmer", "labor"],
+                description: "Loans for non-corporate, non-farm small/micro enterprises.",
+                benefits: "Loans up to ₹10 Lakhs (Shishu, Kishore, Tarun categories) without collateral.",
+                docs: ["Identity Proof", "Address Proof", "Business Plan/Project Report"],
+                needs: "For starting or expanding a small business (shop, repair, etc)."
+            },
+            {
+                title: "PM Awas Yojana (Gramin)",
+                minAge: 21,
+                maxAge: 60,
+                categories: ["any", "labor", "farmer"],
+                description: "Housing for all in rural areas.",
+                benefits: "Financial assistance (approx ₹1.2 Lakh) to build a pucca house.",
+                docs: ["Aadhaar Card", "Job Card (MGNREGA)", "Bank Account", "Swachh Bharat Mission Number"],
+                needs: "Must not own a pucca house already."
+            },
+
+            // Seniors
+            {
+                title: "Indira Gandhi National Old Age Pension",
+                minAge: 60,
+                maxAge: 120,
+                categories: ["any", "farmer", "labor"],
+                description: "Monthly pension for senior citizens belonging to BPL households.",
+                benefits: "Monthly cash pension (Amount varies by state, ₹200-₹1000+).",
+                docs: ["Age Proof", "BPL Card", "Bank Passbook", "Aadhaar Card"],
+                needs: "Must be listed in the BPL census."
+            },
+            {
+                title: "Ayushman Bharat (PM-JAY)",
+                minAge: 0,
+                maxAge: 120,
+                categories: ["any", "farmer", "labor"],
+                description: "World's largest health insurance scheme for poor families.",
+                benefits: "Free treatment up to ₹5 Lakhs per family per year for secondary/tertiary care.",
+                docs: ["Ration Card", "Aadhaar Card", "PM-JAY Letter (if received)"],
+                needs: "Check eligibility using mobile number or Ration card."
+            },
+            {
+                title: "Atal Pension Yojana (APY)",
+                minAge: 18,
+                maxAge: 40,
+                categories: ["any", "labor"],
+                description: "A pension scheme for unorganized sector workers.",
+                benefits: "Guaranteed pension of ₹1,000 to ₹5,000 per month after age 60.",
+                docs: ["Aadhaar Card", "Savings Bank Account"],
+                needs: "Must join between age 18-40 to get benefits after 60."
+            }
+        ];
+
+        // --- Logic ---
+        function findSchemes() {
+            const ageInput = document.getElementById('age').value;
+            const categoryInput = document.getElementById('occupation').value;
+            
+            if (!ageInput) {
+                alert("Please enter a valid age.");
+                return;
+            }
+
+            const age = parseInt(ageInput);
+            
+            // Filter Logic
+            const results = schemesDB.filter(scheme => {
+                // 1. Check Age
+                const ageMatch = age >= scheme.minAge && age <= scheme.maxAge;
+                
+                // 2. Check Category (Matches specific OR 'any')
+                const catMatch = scheme.categories.includes(categoryInput) || scheme.categories.includes('any');
+
+                return ageMatch && catMatch;
+            });
+
+            renderResults(results, age, categoryInput);
+        }
+
+        function renderResults(schemes, age, category) {
+            const container = document.getElementById('schemes-container');
+            const summary = document.getElementById('result-summary');
+            
+            container.innerHTML = ""; // Clear previous
+            
+            // Switch Views
+            document.getElementById('search-view').classList.add('hidden');
+            document.getElementById('results-view').classList.remove('hidden');
+
+            if (schemes.length === 0) {
+                summary.innerText = `No specific schemes found for Age ${age} in this category. Showing general schemes below.`;
+                // Fallback: Show 'any' schemes for that age
+                // In a real app, we might do a secondary search here.
+                container.innerHTML = `<div style="text-align:center; padding:2rem; color:#666;">No exact matches found. Please try changing the category to 'Any'.</div>`;
+                return;
+            } else {
+                summary.innerText = `Found ${schemes.length} schemes for Age: ${age} (${category.toUpperCase()})`;
+            }
+
+            // Generate Cards
+            schemes.forEach(scheme => {
+                const card = document.createElement('div');
+                card.className = 'scheme-item';
+
+                // Tag HTML
+                let tagsHtml = `<span class="tag tag-age">${scheme.minAge}-${scheme.maxAge} Yrs</span>`;
+                scheme.categories.forEach(cat => {
+                    if(cat !== 'any') tagsHtml += `<span class="tag">${cat.toUpperCase()}</span>`;
+                });
+
+                // Documents List HTML
+                let docListHtml = scheme.docs.map(doc => `<li>${doc}</li>`).join('');
+
+                card.innerHTML = `
+                    <div class="scheme-header">
+                        <div class="scheme-title">${scheme.title}</div>
+                        <div class="scheme-tags">${tagsHtml}</div>
+                    </div>
+                    <p style="margin-bottom:1rem; color:var(--text-dark);">${scheme.description}</p>
+                    
+                    <div class="scheme-grid">
+                        <div class="info-block" style="background: #f9fafb; padding:10px; border-radius:8px;">
+                            <h4>Benefits</h4>
+                            <p style="color: var(--primary-blue); font-weight:500;">${scheme.benefits}</p>
+                            <div style="margin-top:10px;">
+                                <h4>Important Aspects/Needs</h4>
+                                <p style="font-size:0.9rem;">${scheme.needs}</p>
+                            </div>
+                        </div>
+
+                        <div class="info-block">
+                            <h4>Required Documents</h4>
+                            <ul>
+                                ${docListHtml}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function resetSearch() {
+            document.getElementById('results-view').classList.add('hidden');
+            document.getElementById('search-view').classList.remove('hidden');
+            // Optional: Clear inputs
+            // document.getElementById('age').value = '';
+        }
+    </script>
+</body>
+</html>
